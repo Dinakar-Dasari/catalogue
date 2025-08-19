@@ -18,7 +18,8 @@ pipeline {
                    echo "Package version: ${appVersion}"
                 }
             }
-        stage('install dependencies')
+        }    
+        stage('install dependencies') {
             steps {
                 script{
                     sh """

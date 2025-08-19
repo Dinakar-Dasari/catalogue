@@ -9,17 +9,17 @@ pipeline {
 
     }
     // Build
-    stages{
-        stage("build"){
-            steps{
+    stages {
+        stage('build') {
+            steps {
                 script {
                    def packageJson = readJSON file: 'package.json'     
                    appVersion = packageJson.version
                    echo "Package version: ${appVersion}"
                 }
             }
-        stage("install dependencies")
-            steps{
+        stage('install dependencies')
+            steps {
                 script{
                     sh """
                     npm install
@@ -27,12 +27,12 @@ pipeline {
                 }
             }    
         }
-        stage("Unit test"){
+        stage('Unit test'){
             steps{
                 echo "unit test"
             }
         }
-        stage("Docker Build"){
+        stage('Docker Build'){
             steps{
                 script{
                     withAWS(credentials: 'aws-cred', region: 'us-east-1') {
@@ -48,17 +48,17 @@ pipeline {
         }
 
         post { 
-        always { 
-            echo 'I will always say Hello again!'
-            deleteDir()
+            always { 
+                echo 'I will always say Hello again!'
+                deleteDir()
+            }
+            success { 
+                echo 'Hello Success'
+            }
+            failure { 
+                echo 'Hello Failure'
+           }
         }
-        success { 
-            echo 'Hello Success'
-        }
-        failure { 
-            echo 'Hello Failure'
-        }
-    }
 
     }
 }

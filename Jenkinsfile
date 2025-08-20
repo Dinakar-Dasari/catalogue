@@ -11,6 +11,7 @@ pipeline {
 
     parameters {
         booleanParam(name: 'deploy', defaultValue: false, description: 'Toggle this value')
+    }
     // Build
     stages {
         stage('build') {
@@ -84,5 +85,3 @@ pipeline {
 
         }
     }
-    
-}

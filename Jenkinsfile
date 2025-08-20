@@ -8,6 +8,9 @@ pipeline {
         COMPONENT = "catalogue"
 
     }
+
+    parameters {
+        booleanParam(name: 'deploy', defaultValue: false, description: 'Toggle this value')
     // Build
     stages {
         stage('build') {
@@ -48,6 +51,23 @@ pipeline {
             }
         }
 
+        stage('trigger deploy'){
+            when{
+                expression {params.deploy}
+            } 
+            steps{
+                script{
+                    build job: 'catalogue-cd',
+                    parameters: [
+                        string(name: 'appVersion', value: "${appVersion}"),
+                        string(name: 'deploy_to', value: 'dev')
+                    ],            
+                    propogate = false,
+                    wait = false
+                }
+            }
+        }
+
     }
 
         post { 
@@ -63,5 +83,6 @@ pipeline {
             }
 
         }
-
+    }
+    
 }
